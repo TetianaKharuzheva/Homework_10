@@ -36,7 +36,7 @@ public class ApiDeliveryTest {
                 .statusCode(HttpStatus.SC_OK)
                 .and()
                 .extract()
-                .path("customerNames");
+                .path("customerName");
         Assertions.assertEquals("TATA", reciveCustomerName);
     }
 
