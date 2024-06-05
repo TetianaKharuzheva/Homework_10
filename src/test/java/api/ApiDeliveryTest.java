@@ -9,13 +9,22 @@ import org.junit.jupiter.api.Test;
 public class ApiDeliveryTest {
     public static final String BASE_URL = "https://backend.tallinn-learning.ee";
     public static final String BASE_PATH = "/test-orders/";
-
     // Homework_10
     //PUT _problem
     @Test
     public void changeOrderDetails() {
-        RestAssured
+        String requestBodyChangeOldMethod = "{\n" +
+                "  \"status\": \"OPEN\",\n" +
+                "  \"courierId\": 0,\n" +
+                "  \"customerName\": \"TATA\",\n" +
+                "  \"customerPhone\": \"string\",\n" +
+                "  \"comment\": \"string\",\n" +
+                "  \"id\": 0\n" +
+                "} ";
+        String reciveCustomerName = RestAssured
                 .given()
+                .contentType(ContentType.JSON)
+                .body(requestBodyChangeOldMethod)
                 .log()
                 .all()
                 .header("api_key", "1111222233334444")
@@ -24,11 +33,14 @@ public class ApiDeliveryTest {
                 .log()
                 .all()
                 .assertThat()
-                .statusCode(HttpStatus.SC_OK);
+                .statusCode(HttpStatus.SC_OK)
+                .and()
+                .extract()
+                .path("customerNames");
+        Assertions.assertEquals("TATA", reciveCustomerName);
     }
 
-    // DELETE _problem
-    @Test
+    // DELETE _is OK
     public void deleteOrderId() {
         RestAssured
                 .given()
